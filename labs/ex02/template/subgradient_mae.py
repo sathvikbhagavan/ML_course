@@ -12,8 +12,10 @@ def compute_subgradient_mae(y, tx, w):
     Returns:
         An array of shape (2, ) (same shape as w), containing the subgradient of the MAE at w.
     """
-    # ***************************************************
-    # INSERT YOUR CODE HERE
-    # TODO: compute subgradient gradient vector for MAE
-    # ***************************************************
-    raise NotImplementedError
+    e = y - tx@w
+    mae_term = np.zeros((y.shape[0], 1))
+    mae_term[e > 0.0] = 1.0
+    mae_term[e < 0.0] = -1.0
+    # mae_term[e == 0.0] = 1.0
+    mae_term = mae_term.reshape((1, y.shape[0]))/y.shape[0]
+    return (-mae_term@tx).T[:, 0]
